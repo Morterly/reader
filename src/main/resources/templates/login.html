@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <div th:insert="fragments/header :: head"></div>
+    <title>Login</title>
+</head>
+
+<body>
+<div class="container me-ms-2 text-center">
+    <header th:insert="fragments/header :: header"></header>
+
+    <form class="w-25 mx-auto" action="/login" method="post">
+        <div class="form-group m-2">
+            <label for="username">Имя пользователя</label>
+            <input type="text" name="username" class="form-control m-1" id="username"
+                   placeholder="Введите имя пользователя">
+        </div>
+        <div class="form-group m-2">
+            <label for="password">Пароль</label>
+            <input type="password" name="password" class="form-control m-1" id="password" placeholder="Введите пароль">
+        </div>
+        <input class="btn btn-success" type="submit" value="Войти">
+    </form>
+    <br>
+    <a class="text-center" th:href="@{/registration}">Регистрация</a>
+</div>
+</body>
+</html>

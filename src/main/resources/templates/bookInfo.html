@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="fragments/header :: head"></div>
+    <title>Main page</title>
+</head>
+<body>
+<div class="container">
+    <header th:insert="fragments/header :: header"></header>
+
+    <div class="card mb-3 ">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img th:src="${book.image}" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h3 class="card-title text-center" th:text="${book.title}">Card title</h3>
+                    <p>Жанр: <a th:href="@{'/books/genres/' + ${book.genre}}"
+                                th:text="${book?.genre?.genre}">Жанр</a></p>
+                    <p>Автор: <a th:text="${book.author.fullName}"
+                                 th:href="@{'/books/author/' + ${book.author.id}}">Автор</a></p>
+                    <p class="card-text" th:text="${book.annotation}">Аннотация</p>
+                    <div class="text-center">
+                        <a th:href="@{'/books/read/' + ${book.id} + '/1'}">Читать</a>
+                    </div>
+                    <br>
+                    <div th:if="${bookmark}" class="text-center">
+                        <a th:href="@{'/books/read/' + ${book.id} + '/' + ${bookmark.page}}">Продолжить чтение</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

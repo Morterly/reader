@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <div th:insert="fragments/header :: head"></div>
+    <title>Main page</title>
+</head>
+<body>
+<div class="container">
+
+
+    <header th:insert="fragments/header :: header"></header>
+    <form method="POST" enctype="multipart/form-data" th:action="@{/upload}">
+        <div class="form-group">
+            <label for="formFile" class="form-label">Файл: </label>
+            <input class="form-control" type="file" id="formFile" name="file">
+        </div>
+        <div class="form-group">
+            <label for="authorSelect">Автор книги: </label>
+            <select name="authorId" class="form-control" id="authorSelect">
+                <option th:value="${-1}"
+                        th:text="${'Выбрать из книги'}">Author
+                </option>
+                <option th:each="author : ${authors}"
+                        th:value="${author.id}"
+                        th:text="${author.fullName}">Author
+                </option>
+            </select>
+        </div>
+        <br>
+        <div class="form-group">
+            <label for="genreSelect">Жанр книги: </label>
+            <select name="genre" class="form-control" id="genreSelect">
+                <option th:each="genre : ${genres}"
+                        th:value="${genre}"
+                        th:text="${genre.genre}">Genre
+                </option>
+            </select>
+        </div>
+        <br>
+        <input type="submit" value="Загрузить">
+    </form>
+</div>
+</body>
+</html>

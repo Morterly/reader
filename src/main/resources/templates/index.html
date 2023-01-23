@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <div th:insert="fragments/header :: head"></div>
+    <title>Main page</title>
+</head>
+
+<body>
+<div class="container">
+    <!--header-->
+    <header th:insert="fragments/header :: header"></header>
+
+    <!--main body-->
+    <div class="m-2 d-flex justify-content-end ">
+        <form class=" col-4 d-flex w-50" role="search" th:action="@{/search}">
+            <input type="text" name="keyword" th:value="${keyword}" class="form-control m-1" placeholder="Поиск по автору или названию!"
+                   aria-label="Search">
+            <button type="submit" class="btn btn-outline-primary m-1">Искать</button>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-3">
+            <ul>
+                <li class="genres border border-dark">ЖАНРЫ</li>
+                <li class="genres border border-dark" th:each="genre : ${genres}">
+                    <a class="genres_link"
+                       th:href="@{'/books/genres/' + ${genre.name}}"
+                       th:text="${genre.genre}"></a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-9">
+            <h3 class="text-center" th:text="${message}"></h3>
+            <div class="row row-cols-1 row-cols-md-5 g-4">
+                <div class="col" th:each="book : ${books}">
+                    <div class="container card p-0 mb-2 text-center" style="height: 530px">
+                        <div>
+                            <img class="card-img-top" th:src="${book.image}" alt="Card image cap">
+                        </div>
+                        <div class="card-body">
+                            <!--<p th:text="${book?.genre?.genre}">Жанр-->
+                            <p class="card-text" th:text="${book.author.fullName}"><small class="text-muted">Author
+                                name</small></p>
+                            <h5 class="card-title" th:text="${book.title}">Book title</h5>
+                        </div>
+                        <div style="padding-bottom: 20px">
+                            <a th:href="@{'/books/info/' + ${book.id}}">Перейти</a>
+                            <a sec:authorize="hasAuthority('ADMIN')" th:href="@{'/books/edit/' + ${book.id}}">Редактировать</a>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <nav class="mt-2 mx-auto" th:if="${!books.isEmpty()}">
+                <ul class="pagination">
+                    <li class="page-item" th:if="${books.number > 0}">
+                        <a class="page-link"
+                           th:text="'<<<'"
+                           th:href="@{''(page=${books.number}, keyword=${keyword})}">Previous</a></li>
+
+                    <li class="page-item"
+                        th:each="i: ${#numbers.sequence(1, books.totalPages)}">
+                        <div style="background: #0d6efd; color: white"
+                             th:if="${#request.getParameter('page') != null and #request.getParameter('page') == i.toString()}">
+                            <label class="selected-page-number" th:text="${i}"></label>
+                        </div>
+                        <div th:if="${#request.getParameter('page') == null or #request.getParameter('page') != i.toString()}">
+                            <a class="page-link"
+                               th:href="@{''(page=${i}, keyword=${keyword})}"
+                               th:text="${i}">1</a>
+                        </div>
+                    </li>
+
+                    <li class="page-item" th:if="${books.number < books.totalPages - 1}">
+                        <a class="page-link" th:text="'>>>'" th:href="@{''(page=${books.number + 2}, keyword=${keyword})}">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

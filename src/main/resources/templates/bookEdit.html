@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="fragments/header :: head"></div>
+    <title>Main page</title>
+</head>
+<body>
+<div class="container">
+    <header th:insert="fragments/header :: header"></header>
+
+    <div th:if="${errors}">
+        <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+    </div>
+
+    <!-- title, author, image, annotation, genre, pathToFile -->
+    <form th:action="@{'/books/edit/' + ${book.id}}" enctype="multipart/form-data" method="post" th:object="${book}">
+
+        <label for="title">Title:
+            <input class="form-control" id="title" name="title" th:value="*{title}" th:text="*{title}"
+                   style="width: 500px;"/>
+        </label><br>
+
+        <label for="authorSelect">Автор книги: </label>
+        <select name="authorId" class="form-control" id="authorSelect">
+            <option th:each="author : ${authors}"
+                    th:value="${author.id}"
+                    th:selected="${author.id == book.author.id}"
+                    th:text="${author.fullName}">Author
+            </option>
+        </select><br>
+
+        <input id="id" type="hidden" name="id" th:field="*{id}">
+
+        <input id="image" type="hidden" name="image" th:field="*{image}"/>
+
+        <input id="pathToFile" type="hidden" name="pathToFile" th:field="*{pathToFile}"/>
+
+        <div class="mb-3">
+            <label for="annotation" class="form-label">Аннотация</label>
+            <textarea class="form-control" id="annotation" rows="3" name="annotation" th:value="*{annotation}"
+                      th:text="*{annotation}"></textarea>
+        </div>
+
+        <label for="genreSelect">Жанр книги: </label>
+        <select name="genre" class="form-control" id="genreSelect">
+            <option th:each="genre : ${genres}"
+                    th:value="${genre}"
+                    th:selected="${genre == book.genre}"
+                    th:text="${genre.genre}">Genre
+            </option>
+        </select><br>
+
+        <button type="submit">Update</button>
+    </form>
+    <br>
+    <form th:action="@{'/books/remove/' + ${book.id}}" method="post">
+        <button type="submit">Remove</button>
+    </form>
+
+</div>
+</body>
+</html>

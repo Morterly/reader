@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:insert="fragments/header :: head"></div>
+    <title>Main page</title>
+</head>
+<body>
+<div class="container text-center">
+    <header th:insert="fragments/header :: header"></header>
+
+    <div th:if="${errors}">
+        <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+    </div>
+
+    <h4 th:text="${message}" style="color: green"></h4>
+
+    <form th:action="@{'/users/info/' + ${user.id}}" enctype="multipart/form-data" method="post" th:object="${user}">
+
+        <input id="id" type="hidden" name="id" th:value="*{id}"/>
+        <input id="role" type="hidden" name="role" th:value="*{role}"/>
+
+        <label for="username">Username:
+            <input id="username" name="username" type="text" th:value="*{username}"/>
+        </label><br>
+
+        <label for="password">Password:
+            <input id="password" name="password" type="password"/>
+        </label><br>
+
+        <label for="email">Email:
+            <input id="email" name="email" type="email" th:value="*{email}"/>
+        </label><br>
+
+        <button type="submit">Update</button>
+    </form>
+    <br>
+
+
+</div>
+</body>
+</html>

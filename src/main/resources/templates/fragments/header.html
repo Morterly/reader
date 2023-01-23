@@ -1,0 +1,47 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<div th:fragment="header">
+    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+        <a th:href="@{/}" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+            <img th:src="@{/img/icon.png}" class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+        </a>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <li><a th:href="@{/}" class="nav-link px-2 link-secondary">Домашняя страница</a></li>
+            <li sec:authorize="hasAuthority('ADMIN')"><a th:href="@{/upload}" class="nav-link px-2 link-dark">Загрузить книгу</a>
+            </li>
+        </ul>
+
+        <form class="col-md-3 text-end" sec:authorize="!isAuthenticated()" action="/login">
+            <input class="btn btn-primary" value="Войти" type="submit"/>
+        </form>
+        <div sec:authorize="isAuthenticated()">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdown01"
+               data-bs-toggle="dropdown" aria-expanded="false"
+               sec:authentication="name">Username</a>
+            <ul class="dropdown-menu" aria-labelledby="dropdown01">
+                <li><a class="dropdown-item" th:href="@{'/users/info/' + ${user?.id}}">Профиль</a></li>
+                <li><a class="dropdown-item" th:href="@{'/users/bookmarks/' + ${user?.id}}">Продолжить чтение</a></li>
+                <li><a class="dropdown-item" th:href="@{/logout}">Выйти</a></li>
+            </ul>
+        </div>
+    </header>
+</div>
+
+<div th:fragment="head">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"
+            integrity="sha384-IDwe1+LCz02ROU9k972gdyvl+AESN10+x7tBKgc9I5HFtuNz0wWnPclzo6p9vxnk"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+            crossorigin="anonymous"></script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</div>
